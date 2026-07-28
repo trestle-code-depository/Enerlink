@@ -1,50 +1,56 @@
 # EnerLink Group — Website
 
-Static HTML/CSS/JS. No build step, no dependencies, no package.json. Every file sits at the repository root so it deploys with no configuration.
+Static HTML/CSS/JS. No build step and no dependencies — the site is served straight from `public/`.
 
-## Pages
+## Repository layout
 
-| File | Page |
-|---|---|
-| `index.html` | Home |
-| `about.html` | About |
-| `why-enerlink.html` | Why EnerLink |
-| `services.html` | Services |
-| `reach.html` | Global Reach |
-| `opportunities.html` | Opportunities |
-| `news.html` | News & Company Brochure |
-| `contact.html` | Contact |
-| `404.html` | Not found |
+```
+wrangler.toml        Cloudflare Worker config (static assets only)
+public/              Everything that gets served
+  index.html         Home
+  about.html         About
+  why-enerlink.html  Why EnerLink
+  services.html      Services
+  reach.html         Global Reach
+  opportunities.html Opportunities
+  news.html          News & Company Brochure
+  contact.html       Contact
+  404.html           Not found
+  styles.css         Custom styles complementing Tailwind
+  main.js            Dark mode, mobile menu, reveals, counters, contact form
+  map.js             Corridor map — renders into any [data-corridor-map] element
+  hero.jpg           Home hero background
+  lng-kitimat.jpg    LNG opportunity card
+  EnerLink-Brochure-EN.pdf
+  robots.txt, sitemap.xml
+```
 
-Each nav tab is a separate page — there are no home-page anchor links in the navigation.
+Every nav tab is its own page — there are no home-page anchor links in the navigation.
 
-## Assets
+## Deploying — Cloudflare Workers (current setup)
 
-| File | Purpose |
-|---|---|
-| `styles.css` | Custom styles that complement Tailwind |
-| `main.js` | Dark mode, mobile menu, scroll reveals, counters, back-to-top, contact form |
-| `map.js` | Corridor map — renders into any `[data-corridor-map]` element |
-| `hero.jpg` | Home hero background |
-| `lng-kitimat.jpg` | LNG opportunity card |
-| `EnerLink-Brochure-EN.pdf` | Company brochure, linked from News and the footer |
-| `robots.txt`, `sitemap.xml` | SEO |
-| `.nojekyll` | Required for GitHub Pages to serve files normally |
+The `enerlinkgroup` Worker is already connected to this repo with:
 
-## Deploying
+- Build command: *none*
+- Deploy command: `npx wrangler deploy`
+- Root directory: `/`
+- Production branch: `main`
 
-### GitHub Pages
-1. Create a repository and push these files to the root of the `main` branch.
-2. Repository → **Settings** → **Pages**.
-3. **Source:** Deploy from a branch. **Branch:** `main`, folder `/ (root)`. Save.
-4. The site publishes at `https://<user>.github.io/<repo>/`.
-5. Custom domain: **Settings → Pages → Custom domain**, enter `www.enerlinkgroup.com`, then add a `CNAME` DNS record pointing at `<user>.github.io`.
+`wrangler deploy` reads `wrangler.toml`, uploads everything in `public/` as static assets, and serves `404.html` for unknown paths. **This file must be at the repository root or the build fails.**
 
-`.nojekyll` is included so GitHub Pages serves every file as-is.
+To publish: commit and push to `main`. Cloudflare builds automatically; watch progress under the Worker's **Deployments** tab.
 
-### Cloudflare Pages (alternative)
-Workers & Pages → Create → **Pages** tab → Connect to Git → pick the repo.
-Framework preset **None**, build command **empty**, build output directory **empty**.
+```bash
+git add .
+git commit -m "Site content revision"
+git push origin main
+```
+
+If the live site still shows old content after a green deployment, purge the Cloudflare cache (**Caching → Configuration → Purge Everything**) and hard-reload.
+
+## Deploying — Cloudflare Pages (simpler alternative)
+
+If you would rather use Pages: Workers & Pages → Create → **Pages** tab → Connect to Git. Framework preset **None**, build command **empty**, build output directory **`public`**. `wrangler.toml` is then ignored.
 
 ## External dependencies (CDN, loaded at runtime)
 
@@ -54,12 +60,12 @@ Framework preset **None**, build command **empty**, build output directory **emp
 - d3 7.9.0 + topojson-client 3.1.0 (map, subresource-integrity pinned) — `unpkg.com`
 - Natural Earth country geometry — `cdn.jsdelivr.net/npm/world-atlas@2.0.2`
 
-**Before public launch:** Tailwind's Play CDN is intended for prototyping. For production, either compile the stylesheet with the Tailwind CLI and ship a single CSS file, or accept the CDN's runtime cost.
+**Before public launch:** Tailwind's Play CDN is meant for prototyping. For production, compile the stylesheet with the Tailwind CLI and ship a single CSS file.
 
 ## Not yet wired
 
-- **Contact form** — markup carries `data-netlify` attributes. On GitHub Pages that does nothing; point the form at Formspree, Netlify Forms, or your own endpoint before launch.
-- **Analytics** — no tag installed. Add a GA4 or Plausible snippet to each `<head>`.
+- **Contact form** — the markup carries `data-netlify` attributes, which do nothing on Cloudflare. Point the form at Formspree, a Cloudflare Worker endpoint, or your own handler before launch.
+- **Analytics** — no tag installed. Cloudflare Web Analytics or GA4 in each `<head>`.
 - **Cookie/consent banner** — required in Canada, Korea and the EU before analytics fire.
 - **Social links** — the LinkedIn and X icons in the footer point at `#`.
 
