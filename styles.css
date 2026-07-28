@@ -1,0 +1,90 @@
+/* EnerLink Group — custom styles (complements Tailwind CDN) */
+
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Hero */
+.hero-bg {
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(29,78,216,.45), transparent 60%),
+    radial-gradient(900px 500px at 100% 10%, rgba(63,158,80,.20), transparent 55%),
+    linear-gradient(180deg, rgba(6,17,33,.86), rgba(6,17,33,.94)),
+    url('hero.jpg') center/cover no-repeat;
+}
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(60% 60% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(90deg, #60a5fa, #3f9e50);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Header legibility: white over the dark hero at the top of the page,
+   reverting to the theme text color once it gains a solid background on scroll */
+#site-header { transition: background-color .3s, color .3s, box-shadow .3s, border-color .3s; }
+#site-header.is-top .nav-link,
+#site-header.is-top .brand-word,
+#site-header.is-top #theme-toggle,
+#site-header.is-top #theme-toggle-m,
+#site-header.is-top #mobile-menu-button { color: #fff; }
+#site-header.is-top #theme-toggle,
+#site-header.is-top #theme-toggle-m,
+#site-header.is-top #mobile-menu-button { border-color: rgba(255,255,255,.4); }
+/* keep hover affordance visible over the hero */
+#site-header.is-top .nav-link:hover { color: #69c37a; }
+
+/* Active nav item — green underline, visible over both dark and light header */
+.nav-active { position: relative; }
+.nav-active::after {
+  content: ''; position: absolute; left: 12px; right: 12px; bottom: 2px;
+  height: 2px; background: #3f9e50; border-radius: 2px;
+}
+
+/* Brand logo wordmark */
+.logo-mark { display: block; }
+.brand-word .w-ener { color: #143a5e; }
+.dark .brand-word .w-ener { color: #ffffff; }
+.brand-word .w-link { color: #3f9e50; }
+/* Over the dark hero/banner (transparent header): white wordmark + lightened mark */
+#site-header.is-top .brand-word .w-ener,
+#site-header.is-top .brand-word .w-link { color: #ffffff; }
+#site-header.is-top .logo-mark .arc-navy { stroke: #dbe7f5; }
+#site-header.is-top .logo-mark .ah-navy { fill: #dbe7f5; }
+#site-header.is-top .logo-mark .arc-green { stroke: #69c37a; }
+#site-header.is-top .logo-mark .ah-green { fill: #69c37a; }
+
+/* Compact interior page banner (dark, no external image) */
+.page-banner {
+  background:
+    radial-gradient(1000px 500px at 20% -30%, rgba(29,78,216,.42), transparent 60%),
+    radial-gradient(800px 400px at 100% 0%, rgba(63,158,80,.16), transparent 55%),
+    linear-gradient(180deg, #0a1a2f, #0c2f54);
+}
+
+/* Reveal on scroll */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* Card sheen */
+.card { position: relative; transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, border-color .35s; }
+.card:hover { transform: translateY(-6px); }
+
+/* Map pins */
+.pin { transform-origin: center; }
+.pin .ping { transform-box: fill-box; transform-origin: center; animation: ping 2.4s ease-out infinite; }
+@keyframes ping { 0% { r: 4; opacity: .8; } 100% { r: 26; opacity: 0; } }
+.arc { stroke-dasharray: 6 8; animation: dash 3s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -140; } }
+
+/* Counter number tabular */
+.num { font-variant-numeric: tabular-nums; }
+
+::selection { background: #3f9e50; color: #0a1a2f; }
+.no-scroll { overflow: hidden; }
