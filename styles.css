@@ -88,3 +88,9 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 
 ::selection { background: #3f9e50; color: #0a1a2f; }
 .no-scroll { overflow: hidden; }
+
+/* Print / PDF export: fixed header should not overlay content across pages */
+@media print {
+  #site-header { position: static !important; }
+  main { padding-top: 0 !important; }
+}

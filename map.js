@@ -6,12 +6,11 @@
   var CITIES = [
     { name: 'Calgary',          tier: 'office',    lon: -114.07, lat: 51.05, dx: 0,   dy: -20, anchor: 'middle' },
     { name: 'Seoul',             tier: 'office',    lon:  126.98, lat: 37.57, dx: 0,   dy: -20, anchor: 'middle' },
-    /*{ name: 'Ho Chi Minh City',  tier: 'office',    lon:  106.70, lat: 10.78, dx: -12, dy: 16,  anchor: 'end' },*/
-    { name: 'Ho Chi Minh City',  tier: 'office',    lon:  106.70, lat: 10.78, dx: -12, dy: 16,  anchor: 'end', markerDx:-100, markerDy:-6 },
+    { name: 'Ho Chi Minh City',  tier: 'office',    lon:  106.70, lat: 10.78, dx: 12,  dy: 20,  anchor: 'start' },
     { name: 'San Francisco',     tier: 'office',    lon: -122.42, lat: 37.77, dx: 0,   dy: -20, anchor: 'middle' },
     { name: 'Houston',           tier: 'partner',   lon:  -95.37, lat: 29.76, dx: 12,  dy: 5,   anchor: 'start' },
     { name: 'New York',          tier: 'partner',   lon:  -74.01, lat: 40.71, dx: 12,  dy: -14, anchor: 'start' },
-    { name: 'Phnom Penh',        tier: 'associate', lon:  104.92, lat: 11.57, dx: 12,  dy: 16,  anchor: 'start' }
+    { name: 'Phnom Penh',        tier: 'associate', lon:  104.92, lat: 11.57, dx: -12, dy: -10, anchor: 'end' }
   ];
 
   function render(el) {
@@ -20,7 +19,7 @@
     var land   = dark ? '#132c4a' : '#e8eef7';
     var stroke = dark ? '#2c5687' : '#b8c8de';
     var officeCol = dark ? '#69c37a' : '#3f9e50';
-    var partnerCol = dark ? '#8fb0d6' : '#5b7391';
+    var partnerCol = dark ? '#a9c8ee' : '#3d5a80';
     var label  = dark ? '#e5eefc' : '#0c2f54';
     var sub    = dark ? '#8fb0d6' : '#5b7391';
 
@@ -53,12 +52,12 @@
           pin.append('circle').attr('cx', p[0]).attr('cy', p[1]).attr('r', 5.5)
             .attr('fill', officeCol).attr('stroke', dark ? '#0a1a2f' : '#ffffff').attr('stroke-width', 2);
         } else if (c.tier === 'partner') {
-          pin.append('circle').attr('cx', p[0]).attr('cy', p[1]).attr('r', 5.5)
-            .attr('fill', 'none').attr('stroke', partnerCol).attr('stroke-width', 2)
-            .attr('stroke-dasharray', '2.5 2.5');
+          pin.append('circle').attr('cx', p[0]).attr('cy', p[1]).attr('r', 6)
+            .attr('fill', 'none').attr('stroke', partnerCol).attr('stroke-width', 2.5)
+            .attr('stroke-dasharray', '3 2.5');
         } else {
-          pin.append('circle').attr('cx', p[0]).attr('cy', p[1]).attr('r', 5)
-            .attr('fill', dark ? '#0a1a2f' : '#ffffff').attr('stroke', partnerCol).attr('stroke-width', 1.75);
+          pin.append('circle').attr('cx', p[0]).attr('cy', p[1]).attr('r', 5.5)
+            .attr('fill', dark ? '#0a1a2f' : '#ffffff').attr('stroke', partnerCol).attr('stroke-width', 2.25);
         }
 
         pin.append('text')
@@ -84,9 +83,9 @@
         if (item.tier === 'office') {
           grp.append('circle').attr('r', 5).attr('fill', officeCol);
         } else if (item.tier === 'partner') {
-          grp.append('circle').attr('r', 5).attr('fill', 'none').attr('stroke', partnerCol).attr('stroke-width', 2).attr('stroke-dasharray', '2.5 2.5');
+          grp.append('circle').attr('r', 5.5).attr('fill', 'none').attr('stroke', partnerCol).attr('stroke-width', 2.5).attr('stroke-dasharray', '3 2.5');
         } else {
-          grp.append('circle').attr('r', 5).attr('fill', dark ? '#0a1a2f' : '#ffffff').attr('stroke', partnerCol).attr('stroke-width', 1.75);
+          grp.append('circle').attr('r', 5).attr('fill', dark ? '#0a1a2f' : '#ffffff').attr('stroke', partnerCol).attr('stroke-width', 2.25);
         }
         grp.append('text').attr('x', 12).attr('y', 4).attr('font-size', 11.5).attr('fill', sub).attr('font-family', 'Inter, sans-serif').text(item.label);
       });
